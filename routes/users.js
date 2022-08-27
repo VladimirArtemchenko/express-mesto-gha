@@ -1,5 +1,4 @@
-// это файл маршрутов
-const router = require('express').Router(); // создали роутер
+const router = require('express').Router();
 const {
   findUsers, findUserById, createUser, updateUser, updateAvatar,
 } = require('../controllers/users');

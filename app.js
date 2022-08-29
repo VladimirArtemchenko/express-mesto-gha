@@ -1,5 +1,7 @@
 const express = require('express');
 
+const ERROR_CODE_404 = 404;
+
 const { PORT = 3000 } = process.env;
 const app = express();
 const mongoose = require('mongoose');
@@ -25,7 +27,7 @@ app.use(routerUser);
 app.use(routerCard);
 
 app.use((req, res) => {
-  res.status(404).send({ message: 'Проверьте корректность указанной ссылки' });
+  res.status(ERROR_CODE_404).send({ message: 'Проверьте корректность указанной ссылки' });
 });
 
 app.listen(PORT, () => {

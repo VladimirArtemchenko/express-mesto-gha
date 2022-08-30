@@ -26,6 +26,7 @@ router.post('/cards', celebrate({
         .min(2)
         .max(30),
       link: Joi.string()
+        .required()
         .custom(isValid),
     }),
 }), createCard);

@@ -53,7 +53,7 @@ app.post('/signin', celebrate({
         .required()
         .email(),
       password: Joi.string()
-        .required()
+        .required(),
     }),
 }), login);
 

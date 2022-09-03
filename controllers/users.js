@@ -21,7 +21,7 @@ module.exports.findUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Передан невалидный id'));
-      }else{
+      } else {
         next(err);
       }
     });
@@ -48,7 +48,7 @@ module.exports.findUserById = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Передан невалидный id'));
-      }else{
+      } else {
         next(err);
       }
     });
@@ -62,42 +62,42 @@ module.exports.createUser = (req, res, next) => {
     email,
     password,
   } = req.body;
-  User.find({email})
-  .then((user) => {
-    console.log(user);
-    console.log(user!==[]);
-    if (user.length !== 0) {
+  User.find({ email })
+    .then((user) => {
       console.log(user);
-      res.status(200)
-      next(new ConflictError('Пользователь с таким e-mail уже существует'));
-    }else{
-    bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      name,
-      about,
-      email,
-      avatar,
-      password: hash,
-    }))
-    .then(() => res.status(200)
-      .send({
-        data: {
-          name,
-          about,
-          avatar,
-          email,
-        },
-      }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
-      }else{
-        next(err);
+      console.log(user !== []);
+      if (user.length !== 0) {
+        console.log(user);
+        res.status(200);
+        next(new ConflictError('Пользователь с таким e-mail уже существует'));
+      } else {
+        bcrypt.hash(password, 10)
+          .then((hash) => User.create({
+            name,
+            about,
+            email,
+            avatar,
+            password: hash,
+          }))
+          .then(() => res.status(200)
+            .send({
+              data: {
+                name,
+                about,
+                avatar,
+                email,
+              },
+            }))
+          .catch((err) => {
+            if (err.name === 'ValidationError') {
+              next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
+            } else {
+              next(err);
+            }
+          });
       }
-    });
-  }
-  })
-  .catch(next);
+    })
+    .catch(next);
 };
 
 module.exports.updateUser = (req, res, next) => {
@@ -123,7 +123,7 @@ module.exports.updateUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
-      }else{
+      } else {
         next(err);
       }
     });
@@ -146,7 +146,7 @@ module.exports.updateAvatar = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
-      }else{
+      } else {
         next(err);
       }
     });

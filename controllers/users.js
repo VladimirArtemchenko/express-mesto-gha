@@ -21,8 +21,9 @@ module.exports.findUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Передан невалидный id'));
+      }else{
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -47,8 +48,9 @@ module.exports.findUserById = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Передан невалидный id'));
+      }else{
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -60,8 +62,16 @@ module.exports.createUser = (req, res, next) => {
     email,
     password,
   } = req.body;
-
-  bcrypt.hash(password, 10)
+  User.find({email})
+  .then((user) => {
+    console.log(user);
+    console.log(user!==[]);
+    if (user.length !== 0) {
+      console.log(user);
+      res.status(200)
+      next(new ConflictError('Пользователь с таким e-mail уже существует'));
+    }else{
+    bcrypt.hash(password, 10)
     .then((hash) => User.create({
       name,
       about,
@@ -81,12 +91,13 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
+      }else{
+        next(err);
       }
-      if (err.name === 'MongoServerError') {
-        next(new ConflictError('Пользователь с таким e-mail уже существует'));
-      }
-      next(err);
     });
+  }
+  })
+  .catch(next);
 };
 
 module.exports.updateUser = (req, res, next) => {
@@ -112,8 +123,9 @@ module.exports.updateUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
+      }else{
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -134,8 +146,9 @@ module.exports.updateAvatar = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
+      }else{
+        next(err);
       }
-      next(err);
     });
 };
 

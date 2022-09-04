@@ -1,10 +1,22 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { PORT = 3000 } = process.env;
-
+const options = {
+  origin: [
+    'http://localhost:3000',
+    'https://artemchenko.nomoredomains.sbs/',
+    'http://artemchenko.nomoredomains.sbs/',
+  ],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+  credentials: true,
+};
 const app = express();
-app.use(cors());
+app.use(cors(options));
 
 const {
   celebrate,
@@ -30,6 +42,13 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 app.post('/signup', celebrate({
   body: Joi.object()
     .keys({

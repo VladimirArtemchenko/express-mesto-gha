@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+
 const { NODE_ENV, JWT_SECRET } = process.env;
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -65,10 +66,7 @@ module.exports.createUser = (req, res, next) => {
   } = req.body;
   User.find({ email })
     .then((user) => {
-      console.log(user);
-      console.log(user !== []);
       if (user.length !== 0) {
-        console.log(user);
         res.status(200);
         next(new ConflictError('Пользователь с таким e-mail уже существует'));
       } else {

@@ -5,9 +5,9 @@ const cors = require('cors');
 const { PORT = 3000 } = process.env;
 const options = {
   origin: [
-    'http://localhost:3000',
-    'https://artemchenko.nomoredomains.sbs/',
-    'http://artemchenko.nomoredomains.sbs/',
+    'http://localhost:3001',
+    'https://artemchenko.nomoredomains.sbs',
+    'https://artemchenko.nomoredomains.sbs',
   ],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   preflightContinue: false,
